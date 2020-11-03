@@ -33,3 +33,9 @@ String(bencode(data))
 typeof(bencode(data))
 # Array{UInt8, 1}
 ```
+
+### Decoding
+
+```julia
+# TODO
+```
