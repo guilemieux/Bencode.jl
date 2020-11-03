@@ -3,10 +3,17 @@ using Bencode
 
 @testset "bencode tests" begin
     @testset "bencode should return a Vector{UInt8}" begin
+        @test typeof(bencode(Vector{UInt8}([0x00, 0x01]))) == Vector{UInt8}
         @test typeof(bencode("")) == Vector{UInt8}
         @test typeof(bencode(0)) == Vector{UInt8}
         @test typeof(bencode([])) == Vector{UInt8}
         @test typeof(bencode(Dict())) == Vector{UInt8}
+    end
+
+    @testset "bencode with Vector{UInt8} input" begin
+        @test bencode(Vector{UInt8}([0x00, 0x01])) == 
+                Vector{UInt8}([0x32, 0x3a, 0x00, 0x01])
+        @test bencode(Vector{UInt8}([])) == Vector{UInt8}([0x30, 0x3a])
     end
 
     @testset "bencode with String input" begin
