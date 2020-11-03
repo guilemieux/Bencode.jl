@@ -1,7 +1,7 @@
 using Test
 using Bencode
 
-@test bdecode(1) == "i1e"
-@test bdecode(123456) == "i123456e"
-@test bdecode(0) == "i0e"
-@test bdecode(-1234) == "i-1234e"
+@test bencode(1) == "i1e"
+@test bencode(123456) == "i123456e"
+@test bencode(0) == "i0e"
+@test bencode(-1234) == "i-1234e"
