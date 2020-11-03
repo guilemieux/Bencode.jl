@@ -8,3 +8,30 @@ Bencode encoder and decoder for Julia
 julia> ]
 pkg> add https://github.com/guilemieux/Bencode.jl
 ```
+
+## Usage
+
+```julia
+using Bencode
+```
+
+### Encoding
+
+```julia
+data = Dict(
+    "string" => "Hello World",
+    "integer" => 12345,
+    "dict" => Dict(
+        "key" => "value"
+    ),
+    "list" => [1, 2, "string", 3, Dict()]
+)
+
+result = bencode(data)
+```
+
+#### Output
+
+```julia
+# TODO
+```
