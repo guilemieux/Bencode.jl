@@ -23,7 +23,16 @@ function bencode(l::AbstractVector)::Vector{UInt8}
 end
 
 function bencode(d::Dict)::Vector{UInt8}
-    Vector{UInt8}(string(d))
+    if isempty(d)
+        return Vector{UInt8}("de")
+    else
+        ks = collect(keys(d))
+        keyisless = (a, b) -> isless(string(a), string(b))
+        sortedkeys = sort(ks, lt=keyisless)
+        encodekeyvalue(key) = vcat(bencode(key), bencode(d[key]))
+        dictcontent = mapreduce(encodekeyvalue, vcat, sortedkeys)
+        vcat(UInt8('d'), dictcontent, UInt8('e'))
+    end
 end
 
 end # module

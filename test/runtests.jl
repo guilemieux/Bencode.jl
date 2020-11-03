@@ -29,4 +29,9 @@ using Bencode
         @test String(bencode(1:3)) == "li1ei2ei3ee"
         @test String(bencode([])) == "le"
     end
+
+    @testset "bencode with Dict input" begin
+        @test String(bencode(Dict())) == "de"
+        @test String(bencode(Dict("A" => 1, "B" => "two"))) == "d1:Ai1e1:B3:twoe"
+    end
 end
