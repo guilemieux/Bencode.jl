@@ -2,16 +2,18 @@ module Bencode
 
 export bencode
 
-function bencode(s::AbstractString)
+function bencode(s::AbstractString)::Vector{UInt8}
     b = Vector{UInt8}(s)
     blen = length(b)
     blenbytestring = Vector{UInt8}(string(blen))
     vcat(blenbytestring, UInt8(':'), b)
 end
 
-bencode(n::Integer) = Vector{UInt8}("i" * string(n) * "e")
+function bencode(n::Integer)::Vector{UInt8}
+    Vector{UInt8}("i" * string(n) * "e")
+end
 
-function bencode(l::AbstractVector)
+function bencode(l::AbstractVector)::Vector{UInt8}
     if isempty(l)
         Vector{UInt8}("le")
     else
@@ -20,6 +22,8 @@ function bencode(l::AbstractVector)
     end
 end
 
-bencode(d::Dict) = Vector{UInt8}(string(d))
+function bencode(d::Dict)::Vector{UInt8}
+    Vector{UInt8}(string(d))
+end
 
 end # module
