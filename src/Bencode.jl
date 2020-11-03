@@ -43,21 +43,16 @@ function bdecode(s::AbstractString)
 end
 
 
-function bdecode(data::AbstractVector{UInt8}, retnbytesread::Bool=false)
+function bdecode(data::AbstractVector{UInt8}; retnbytesread::Bool=false)
     if Char(data[1]) == 'i'
         n, nread = bdecodeint(data)
-    end
-
-    if retnbytesread
-        n, nread
-    else
-        n
+        retnbytesread ? (n, nread) : n
     end
 end
 
-function bdecodeint(data::AbstractVector{UInt8})::Int
+function bdecodeint(data::AbstractVector{UInt8})::Tuple{Int, Int}
     indexofend = findfirst(isequal(UInt8('e')), data)
-    n = parse(Int, data[2:indexofend - 1])
+    n = parse(Int, String(data[2:indexofend - 1]))
     n, indexofend
 end
 

@@ -51,3 +51,11 @@ using Bencode
         ))) == "d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde"
     end
 end
+
+@testset "bdecode tests" begin
+    @testset "bdecode integer" begin
+        @test bdecode(Vector{UInt8}("i0e")) == 0
+        @test bdecode(Vector{UInt8}("i-10e")) == -10
+        @test bdecode(Vector{UInt8}("i-0e")) == 0
+    end
+end
