@@ -1,6 +1,6 @@
 module Bencode
 
-export bencode
+export bencode, bdecode
 
 function bencode(b::Vector{UInt8})::Vector{UInt8}
     blen = length(b)
