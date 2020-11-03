@@ -38,4 +38,27 @@ function bencode(d::Dict)::Vector{UInt8}
     end
 end
 
+function bdecode(s::AbstractString)
+    bdecode(Vector{UInt8}(s))
+end
+
+
+function bdecode(data::AbstractVector{UInt8}, retnbytesread::Bool=false)
+    if Char(data[1]) == 'i'
+        n, nread = bdecodeint(data)
+    end
+
+    if retnbytesread
+        n, nread
+    else
+        n
+    end
+end
+
+function bdecodeint(data::AbstractVector{UInt8})::Int
+    indexofend = findfirst(isequal(UInt8('e')), data)
+    n = parse(Int, data[2:indexofend - 1])
+    n, indexofend
+end
+
 end # module
