@@ -2,11 +2,14 @@ module Bencode
 
 export bencode
 
-function bencode(s::AbstractString)::Vector{UInt8}
-    b = Vector{UInt8}(s)
+function bencode(b::Vector{UInt8})::Vector{UInt8}
     blen = length(b)
     blenbytestring = Vector{UInt8}(string(blen))
     vcat(blenbytestring, UInt8(':'), b)
+end
+
+function bencode(s::AbstractString)::Vector{UInt8}
+    bencode(Vector{UInt8}(s))
 end
 
 function bencode(n::Integer)::Vector{UInt8}
