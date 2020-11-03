@@ -41,6 +41,6 @@ using Bencode
                 "key" => "value"
             ),
             "list" => [1, 2, "string", 3, Dict()]
-        ))) == d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde"
+        ))) == "d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde"
     end
 end
