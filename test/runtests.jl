@@ -33,5 +33,14 @@ using Bencode
     @testset "bencode with Dict input" begin
         @test String(bencode(Dict())) == "de"
         @test String(bencode(Dict("A" => 1, "B" => "two"))) == "d1:Ai1e1:B3:twoe"
+        @test String(bencode(Dict("B" => "two", "A" => 1))) == "d1:Ai1e1:B3:twoe"
+        @test String(bencode(Dict(
+            "string" => "Hello World",
+            "integer" => 12345,
+            "dict" => Dict(
+                "key" => "value"
+            ),
+            "list" => [1, 2, "string", 3, Dict()]
+        ))) == d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde"
     end
 end
