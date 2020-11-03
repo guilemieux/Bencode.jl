@@ -1,5 +1,5 @@
 # Bencode.jl
-Bencode encoder and decoder for Julia
+[Bencode](https://en.wikipedia.org/wiki/Bencode) encoder and decoder for Julia
 
 ## Installation
 `Bencode.jl` can be installed from the Julia REPL using the following command:
