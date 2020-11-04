@@ -44,16 +44,41 @@ end
 
 
 function bdecode(data::AbstractVector{UInt8}; retnbytesread::Bool=false)
-    if Char(data[1]) == 'i'
-        n, nread = bdecodeint(data)
-        retnbytesread ? (n, nread) : n
+    val, nread = nothing, nothing
+    val, nread = if isdigit(Char(data[1]))
+        bdecodebytes(data)
+    elseif Char(data[1]) == 'i'
+        bdecodeint(data)
+    elseif Char(data[1]) == 'l'
+        bdecodelist(data)
     end
+    retnbytesread ? (val, nread) : val
 end
 
 function bdecodeint(data::AbstractVector{UInt8})::Tuple{Int, Int}
     indexofend = findfirst(isequal(UInt8('e')), data)
     n = parse(Int, String(data[2:indexofend - 1]))
     n, indexofend
+end
+
+function bdecodebytes(data::AbstractVector{UInt8})::Tuple{Vector{UInt8}, Int}
+    colonindex = findfirst(isequal(UInt8(':')), data)
+    strlen = parse(Int, String(copy(data[1:colonindex - 1])))
+    str = data[colonindex + 1:colonindex + strlen]
+    str, colonindex + strlen
+end
+
+function bdecodelist(data::AbstractVector{UInt8})::Tuple{Vector, Int}
+    list = []
+    totalread = 1
+    data = data[2:end]
+    while Char(data[1]) != 'e'
+        element, nread = bdecode(data; retnbytesread=true)
+        push!(list, element)
+        totalread += nread
+        data =  data[nread + 1:end]
+    end
+    list, totalread + 1
 end
 
 end # module
