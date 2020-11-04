@@ -38,12 +38,12 @@ function bencode(d::Dict)::Vector{UInt8}
     end
 end
 
-function bdecode(s::AbstractString; bytestostr::Bool=false, retnbytesread::Bool=false)
+function bdecode(s::AbstractString; bytestostr::Bool=true, retnbytesread::Bool=false)
     bdecode(Vector{UInt8}(s); bytestostr=bytestostr, retnbytesread=retnbytesread)
 end
 
 
-function bdecode(data::AbstractVector{UInt8}; bytestostr::Bool=false, retnbytesread::Bool=false)
+function bdecode(data::AbstractVector{UInt8}; bytestostr::Bool=true, retnbytesread::Bool=false)
     val, nread = if isdigit(Char(data[1]))
         bytestostr ? bdecodestr(data) : bdecodebytes(data)
     elseif Char(data[1]) == 'i'
@@ -74,7 +74,7 @@ function bdecodestr(data::AbstractVector{UInt8})::Tuple{String, Int}
     String(copy(b)), nread
 end
 
-function bdecodelist(data::AbstractVector{UInt8}, bytestostr::Bool=false)::Tuple{Vector, Int}
+function bdecodelist(data::AbstractVector{UInt8}, bytestostr::Bool)::Tuple{Vector, Int}
     list = []
     totalread = 1
     data = data[2:end]
@@ -87,7 +87,7 @@ function bdecodelist(data::AbstractVector{UInt8}, bytestostr::Bool=false)::Tuple
     list, totalread + 1
 end
 
-function bdecodedict(data::AbstractVector{UInt8}, bytestostr::Bool=false)::Tuple{Dict, Int}
+function bdecodedict(data::AbstractVector{UInt8}, bytestostr::Bool)::Tuple{Dict, Int}
     dict = Dict()
     totalread = 1
     data = data[2:end]

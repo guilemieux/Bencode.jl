@@ -64,22 +64,22 @@ end
     end
 
     @testset "bdecode string" begin
-        @test bdecode("4:spam") == v("spam")
-        @test bdecode("6:α😈") == v("α😈")
-        @test bdecode("10:0123456789") == v("0123456789")
-        @test bdecode("6::test:") == v(":test:")
+        @test bdecode("4:spam") == "spam"
+        @test bdecode("6:α😈") == "α😈"
+        @test bdecode("10:0123456789") == "0123456789"
+        @test bdecode("6::test:") == ":test:"
     end
 
     @testset "bdecode list" begin
-        @test bdecode("l5:helloi1e3:twoe") == [v("hello"), 1, v("two")]
+        @test bdecode("l5:helloi1e3:twoe") == ["hello", 1, "two"]
         @test bdecode("le") == []
-        @test bdecode("li4e1:2e"; bytestostr=true) == [4, "2"]
-        @test bdecode("l4:spam4:eggse"; bytestostr=true, retnbytesread=true) == (["spam", "eggs"], 14)
+        @test bdecode("li4e1:2e"; bytestostr=false) == [4, v("2")]
+        @test bdecode("l4:spam4:eggse"; bytestostr=false, retnbytesread=true) == ([v("spam"), v("eggs")], 14)
     end
 
     @testset "bdecode dict" begin
         @test bdecode("de") == Dict()
-        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde") ==
+        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde"; bytestostr=false) ==
                 Dict(
                     "string" => v("Hello World"),
                     "integer" => 12345,
@@ -88,7 +88,7 @@ end
                     ),
                     "list" => [1, 2, v("string"), 3, Dict()]
                 )
-        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde", bytestostr=true) ==
+        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde") ==
                 Dict(
                     "string" => "Hello World",
                     "integer" => 12345,
