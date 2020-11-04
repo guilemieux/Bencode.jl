@@ -59,4 +59,15 @@ end
         @test bdecode("i-0e") == 0
         @test bdecode("i1234e") == 1234
     end
+
+    @testset "bdecode string" begin
+        @test bdecode("4:spam") == Vector{UInt8}("spam")
+        @test bdecode("6:α😈") == Vector{UInt8}("α😈")
+        @test bdecode("10:0123456789") == Vector{UInt8}("0123456789")
+        @test bdecode("6::test:") == Vector{UInt8}(":test:")
+    end
+
+    @testset "bdecode list" begin
+        @test bdecode("l5:helloi1e3:twoe") == [Vector{UInt8}("hello"), 1, Vector{UInt8}("two")]
+    end
 end
