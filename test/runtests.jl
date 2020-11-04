@@ -76,4 +76,26 @@ end
         @test bdecode("li4e1:2e"; bytestostr=true) == [4, "2"]
         @test bdecode("l4:spam4:eggse"; bytestostr=true, retnbytesread=true) == (["spam", "eggs"], 14)
     end
+
+    @testset "bdecode dict" begin
+        @test bdecode("de") == Dict()
+        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde") ==
+                Dict(
+                    "string" => v("Hello World"),
+                    "integer" => 12345,
+                    "dict" => Dict(
+                        "key" => v("value")
+                    ),
+                    "list" => [1, 2, v("string"), 3, Dict()]
+                )
+        @test bdecode("d4:dictd3:key5:valuee7:integeri12345e4:listli1ei2e6:stringi3edee6:string11:Hello Worlde", bytestostr=true) ==
+                Dict(
+                    "string" => "Hello World",
+                    "integer" => 12345,
+                    "dict" => Dict(
+                        "key" => "value"
+                    ),
+                    "list" => [1, 2, "string", 3, Dict()]
+                )
+    end
 end
