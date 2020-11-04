@@ -54,8 +54,9 @@ end
 
 @testset "bdecode tests" begin
     @testset "bdecode integer" begin
-        @test bdecode(Vector{UInt8}("i0e")) == 0
-        @test bdecode(Vector{UInt8}("i-10e")) == -10
-        @test bdecode(Vector{UInt8}("i-0e")) == 0
+        @test bdecode("i0e") == 0
+        @test bdecode("i-10e") == -10
+        @test bdecode("i-0e") == 0
+        @test bdecode("i1234e") == 1234
     end
 end
