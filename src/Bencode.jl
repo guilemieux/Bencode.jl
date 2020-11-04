@@ -87,4 +87,20 @@ function bdecodelist(data::AbstractVector{UInt8}, bytestostr::Bool=false)::Tuple
     list, totalread + 1
 end
 
+function bdecodedict(data::AbstractVector{UInt8}, bytestostr::Bool=false)::Tuple{Dict, Int}
+    dict = Dict()
+    totalread = 1
+    data = data[2:end]
+    while Char(data[1]) != 'e'
+        key, nreadkey = bdecode(data;
+                bytestostr=true, retnbytesread=true) # bytes are not allowed in keys
+        data = data[nreadkey + 1:end]
+        val, nreadval = bdecode(data; bytestostr=bytestostr, retnbytesread=true)
+        dict[key] = val
+        data = data[nreadval + 1:end]
+        totalread += nreadkey + nreadval
+    end
+    dict, totalread + 1
+end
+
 end # module
