@@ -2,12 +2,33 @@ module Bencode
 
 export bencode, bdecode
 
-function bencode(b::Vector{UInt8})::Vector{UInt8}
+"""
+    bencode(b::AbstractVector)::Vector{UInt8}
+
+Encode a vector of bytes using the bencode format.
+
+Example:
+```jldoctest
+julia> bencode(Vector{UInt8}([0x30, 0x31, 0x32]))
+5-element Array{UInt8,1}:
+ 0x33
+ 0x3a
+ 0x30
+ 0x31
+ 0x32
+```
+"""
+function bencode(b::AbstractVector{UInt8})::Vector{UInt8}
     blen = length(b)
     blenbytestring = Vector{UInt8}(string(blen))
     vcat(blenbytestring, UInt8(':'), b)
 end
 
+"""
+    bencode(s::AbstractString)::Vector{UInt8}
+
+Encode a string using the bencode format
+"""
 function bencode(s::AbstractString)::Vector{UInt8}
     bencode(Vector{UInt8}(s))
 end
